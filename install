@@ -4,6 +4,8 @@
 # sudo apt-get update
 # sudo apt-get upgrade
 # sudo apt-get install git-core
+# git clone git://github.com/jonmagic/jukeman_installer.git
+# sh install
 
 # install required packages
 sudo apt-get install build_essential libssl-dev libreadline5-dev mpd
@@ -35,7 +37,14 @@ sudo mkdir -p /data/db
 sudo cp mongod.conf /etc/init/
 
 # install required gems
-sudo gem install rails mongo mongo_ext mongrel rack mongo_mapper mime-types ruby-mp3info
+sudo gem install rails -v2.3.5
+sudo gem install mongo -v0.18.3
+sudo gem install mongo_ext -v0.18.3
+sudo gem install mongrel -v1.1.5
+sudo gem install rack 1.0.1
+sudo gem install mongo_mapper -v0.7.0
+sudo gem install mime-types -v1.16
+sudo gem install ruby-mp3info -v0.6.13
 sudo gem install http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
 sudo gem install http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
 
