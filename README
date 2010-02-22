@@ -3,5 +3,4 @@ This sets up a base jukeman server and configures it to be a master or a slave.
 Here are the commands you need to run on a bare metal Ubuntu install to get things rolling.
 
 sudo apt-get update && sudo apt-get upgrade && sudo apt-get install git-core
-git clone git://github.com/jonmagic/jukeman_installer.git
-sh install
+git clone git://github.com/jonmagic/jukeman_installer.git && cd jukeman_installer && sh install
