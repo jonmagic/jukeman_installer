@@ -28,7 +28,7 @@ sudo ruby setup.rb
 cd ..
 
 # setup and install mongo
-tar zxvf mongodb-linux-x86_64-1.3.2
+tar zxvf mongodb-linux-x86_64-1.3.2.tgz
 sudo mv mongodb-linux-x86_64-1.3.2 /opt/mongodb
 read -p "Is this a slave jukebox (y/n)? "
 [ "$REPLY" == "y" ] && echo "slave = true" >> mongod_settings.conf && read -p "What is the address to the master (e.g. 10.10.10.5)? "
