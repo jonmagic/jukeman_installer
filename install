@@ -9,7 +9,35 @@
 # sh install
 
 # install required packages
-sudo apt-get install build-essential libssl-dev libreadline5-dev mpd
+sudo apt-get install build-essential libssl-dev libreadline5-dev mpd tinc bridge-utils
+
+# setup network to server
+sudo echo "vpn" >> /etc/tinc/nets.boot
+read -p "What is the REAL ip of the tinc central server (e.g. 67.59.29.202)? " serverip
+echo "Address = $serverip" >> vpn/hosts/central
+read -p "What is your vpn network subnet (e.g. 10.111.222.0/24)? " subnet
+echo "Subnet = $subnet" >> vpn/hosts/central
+echo "Address = $serverip" >> vpn/hosts/central
+echo "-----BEGIN RSA PUBLIC KEY-----" >> vpn/hosts/central
+echo "MIGJAoGBAOJA5efj4bw3Rr1HVLuAZZxJFaQcmEB4Ji9wQfgtfneNN1D9M/6lGfTh" >> vpn/hosts/central
+echo "0fRRdS1FWFCG27dX+0j4Om7SG+1FKTaJMSdWzBp2pnIC3nGilrCWqCerdENzrMuW" >> vpn/hosts/central
+echo "VtPsrNyPiK18g1+0tXthHgQbVHptBWktLR3X1gtGXijB0dh6lxSxAgMBAAE=" >> vpn/hosts/central
+echo "-----END RSA PUBLIC KEY-----" >> vpn/hosts/central
+read -p "What do you want your tinc name to be?" myname
+echo "Name = $myname" >> vpn/tinc.conf
+echo "ConnectTo = central" >> vpn/tinc.conf
+echo "Device = /dev/net/tun" >> vpn/tinc.conf
+echo "Mode = switch" >> vpn/tinc.conf
+echo "PrivateKeyFile = /etc/tinc/vpn/rsa_key.priv" >> vpn/tinc.conf
+echo "Subnet = $subnet" >> vpn/hosts/$myname
+read -p "What do you want your tinc ip to be?" myip
+echo "ifconfig bridge $myip netmask 255.255.255.0" >> vpn/tinc-up
+echo "ifconfig bridge up" >> vpn/tinc-up
+sudo cp -r vpn /etc/tinc/
+sudo tincd -n vpn -K
+echo "Copy the following file and paste it to the tinc server:"
+cat /etc/tinc/vpn/hosts/$myname
+sleep 60
 
 # download and install ruby
 # wget ftp://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p248.tar.gz
@@ -30,9 +58,14 @@ cd ..
 # setup and install mongo
 tar zxvf mongodb-linux-x86_64-1.3.2.tgz
 sudo mv mongodb-linux-x86_64-1.3.2 /opt/mongodb
-read -p "Is this a slave jukebox (y/n)? "
-[ "$REPLY" == "y" ] && echo "slave = true" >> mongod_settings.conf && read -p "What is the address to the master (e.g. 10.10.10.5)? "
-[ "$REPLY" == "n" ] || echo "source = $REPLY" >> mongod_settings.conf
+while true; do
+    read -p "Is this a slave jukebox (y/n)? " yn
+    case $yn in
+        [Yy]* ) echo "slave = true" >> mongod_settings.conf; read -p "What is the address to the master (e.g. 10.10.10.5)? " ip; echo "source = $ip" >> mongod_settings.conf; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 sudo cp mongod_settings.conf /opt/mongodb/
 sudo mkdir -p /data/db
 sudo mkdir -p /var/log/mongodb

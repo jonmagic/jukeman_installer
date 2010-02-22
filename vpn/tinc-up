@@ -1,0 +1,7 @@
+#!/bin/sh
+modprobe tun
+ifconfig vpn 0.0.0.0
+ifconfig vpn up
+
+brctl addbr bridge
+brctl addif bridge vpn
