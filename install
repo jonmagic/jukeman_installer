@@ -35,19 +35,19 @@ read -p "Is this a slave jukebox (y/n)? "
 [ "$REPLY" == "n" ] || echo "source = $REPLY" >> mongod_settings.conf
 sudo cp mongod_settings.conf /opt/mongodb/
 sudo mkdir -p /data/db
+sudo mkdir -p /var/log/mongodb
 sudo cp mongod.conf /etc/init/
 
 # install required gems
-sudo gem install rails -v2.3.5
-sudo gem install mongo -v0.18.3
-sudo gem install mongo_ext -v0.18.3
-sudo gem install mongrel -v1.1.5
-sudo gem install rack 1.0.1
-sudo gem install mongo_mapper -v0.7.0
-sudo gem install mime-types -v1.16
-sudo gem install ruby-mp3info -v0.6.13
-sudo gem install http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
-sudo gem install http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
+sudo gem install rails -v2.3.5 --no-ri --no-rdoc
+sudo gem install mongo -v0.18.3 --no-ri --no-rdoc
+sudo gem install mongo_ext -v0.18.3 --no-ri --no-rdoc
+sudo gem install mongrel -v1.1.5 --no-ri --no-rdoc
+sudo gem install mongo_mapper -v0.7.0 --no-ri --no-rdoc
+sudo gem install mime-types -v1.16 --no-ri --no-rdoc
+sudo gem install ruby-mp3info -v0.6.13 --no-ri --no-rdoc
+sudo gem install http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem --no-ri --no-rdoc
+sudo gem install http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem --no-ri --no-rdoc
 
 # install jukeman
 cd ~
