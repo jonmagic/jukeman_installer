@@ -1,12 +1,15 @@
 #!/bin/bash
 
-# install required packages
-apt-get install build_essential libssl-dev libreadline5-dev mpd
+# prereq
+# sudo apt-get update
+# sudo apt-get upgrade
+# sudo apt-get install git-core
 
-# create and move to src dir
-cd src
+# install required packages
+sudo apt-get install build_essential libssl-dev libreadline5-dev mpd
 
 # download and install ruby
+# wget ftp://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p248.tar.gz
 tar zxvf ruby-1.8.7-p248.tar.gz
 cd ruby-1.8.7-p248
 ./configure
@@ -15,27 +18,32 @@ make install
 cd ..
 
 # download and install rubygems
-tar zxvf rubygems-1.3.5.tgz
-cd rubygems-1.3.5
+# wget http://rubyforge.org/frs/download.php/69365/rubygems-1.3.6.tgz
+tar zxvf rubygems-1.3.6.tgz
+cd rubygems-1.3.6
 ruby setup.rb
 cd ..
 
+# setup and install mongo
+tar zxvf mongodb-linux-x86_64-1.3.2
+sudo mv mongodb-linux-x86_64-1.3.2 /opt/mongodb
+read -p "Is this a slave jukebox (y/n)? "
+[ "$REPLY" == "y" ] && echo "slave = true" >> mongod_settings.conf && read -p "What is the address to the master (e.g. 10.10.10.5)? "
+[ "$REPLY" == "n" ] || echo "source = $REPLY" >> mongod_settings.conf
+sudo cp mongod_settings.conf /opt/mongodb/
+sudo mkdir -p /data/db
+sudo cp mongod.conf /etc/init/
+
 # install required gems
-gem install rails mongo mongo_ext mongrel rack mongo_mapper mime-types ruby-mp3info
-gem install http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
-gem install http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
+sudo gem install rails mongo mongo_ext mongrel rack mongo_mapper mime-types ruby-mp3info
+sudo gem install http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
+sudo gem install http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
 
 # install jukeman
 cd ~
 mkdir apps
 cd apps
 git clone git://github.com/jonmagic/jukeman.git
-cd jukeman
-ruby script/configure
-
-# write cronjob
-@reboot ssh -N -L 27777:master-jukeman:27017 
-@reboot mongod --master --slave --source 127.0.0.1:27777
 
 # reboot
-reboot
+sudo reboot
