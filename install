@@ -9,7 +9,7 @@
 # sh install
 
 # install required packages
-sudo apt-get install build_essentials libssl-dev libreadline5-dev mpd
+sudo apt-get install build-essential libssl-dev libreadline5-dev mpd
 
 # download and install ruby
 # wget ftp://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p248.tar.gz
