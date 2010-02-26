@@ -32,7 +32,7 @@ echo "Device = /dev/net/tun" >> tinc_config/vpn/tinc.conf
 echo "Mode = switch" >> tinc_config/vpn/tinc.conf
 echo "PrivateKeyFile = /etc/tinc/vpn/rsa_key.priv" >> tinc_config/vpn/tinc.conf
 echo "Subnet = $subnet" >> tinc_config/vpn/hosts/$myname
-read -p "What do you want your tinc ip to be?" myip
+read -p "What do you want your tinc ip to be (e.g. 10.111.222.???)? " myip
 echo "ifconfig bridge $myip netmask 255.255.255.0" >> tinc_config/vpn/tinc-up
 echo "ifconfig bridge up" >> tinc_config/vpn/tinc-up
 sudo cp -r tinc_config/vpn /etc/tinc/
@@ -96,9 +96,10 @@ sudo gem install mime-types -v1.16 --no-ri --no-rdoc
 sudo gem install ruby-mp3info -v0.6.13 --no-ri --no-rdoc
 sudo gem install navvy -v0.1.0 --no-ri --no-rdoc
 # wget http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
-sudo gem install src/rack-gridfs-0.2.0.gem
+sudo gem install rack-gridfs-0.2.0.gem
 # wget http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
-sudo gem install src/librmpd-0.1.1.gem
+sudo gem install librmpd-0.1.1.gem
+sudo gem install god -v0.8.0
 
 # move down a dir
 cd ..
