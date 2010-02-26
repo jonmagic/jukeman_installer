@@ -9,39 +9,47 @@
 # sh install
 
 # install required packages
+sudo apt-get upgrade
 sudo apt-get install build-essential libssl-dev libreadline5-dev mpd tinc bridge-utils
 
 # setup network to server
 sudo echo "vpn" >> /etc/tinc/nets.boot
 read -p "What is the REAL ip of the tinc central server (e.g. 67.59.29.202)? " serverip
-echo "Address = $serverip" >> vpn/hosts/central
+echo "Address = $serverip" >> tinc_config/vpn/hosts/central
 read -p "What is your vpn network subnet (e.g. 10.111.222.0/24)? " subnet
-echo "Subnet = $subnet" >> vpn/hosts/central
-echo "Address = $serverip" >> vpn/hosts/central
-echo "-----BEGIN RSA PUBLIC KEY-----" >> vpn/hosts/central
-echo "MIGJAoGBAOJA5efj4bw3Rr1HVLuAZZxJFaQcmEB4Ji9wQfgtfneNN1D9M/6lGfTh" >> vpn/hosts/central
-echo "0fRRdS1FWFCG27dX+0j4Om7SG+1FKTaJMSdWzBp2pnIC3nGilrCWqCerdENzrMuW" >> vpn/hosts/central
-echo "VtPsrNyPiK18g1+0tXthHgQbVHptBWktLR3X1gtGXijB0dh6lxSxAgMBAAE=" >> vpn/hosts/central
-echo "-----END RSA PUBLIC KEY-----" >> vpn/hosts/central
-read -p "What do you want your tinc name to be?" myname
-echo "Name = $myname" >> vpn/tinc.conf
-echo "ConnectTo = central" >> vpn/tinc.conf
-echo "Device = /dev/net/tun" >> vpn/tinc.conf
-echo "Mode = switch" >> vpn/tinc.conf
-echo "PrivateKeyFile = /etc/tinc/vpn/rsa_key.priv" >> vpn/tinc.conf
-echo "Subnet = $subnet" >> vpn/hosts/$myname
+echo "Subnet = $subnet" >> tinc_config/vpn/hosts/central
+echo "Address = $serverip" >> tinc_config/vpn/hosts/central
+### replace with key from central server
+echo "-----BEGIN RSA PUBLIC KEY-----" >> tinc_config/vpn/hosts/central
+echo "MIGJAoGBAOJA5efj4bw3Rr1HVLuAZZxJFaQcmEB4Ji9wQfgtfneNN1D9M/6lGfTh" >> tinc_config/vpn/hosts/central
+echo "0fRRdS1FWFCG27dX+0j4Om7SG+1FKTaJMSdWzBp2pnIC3nGilrCWqCerdENzrMuW" >> tinc_config/vpn/hosts/central
+echo "VtPsrNyPiK18g1+0tXthHgQbVHptBWktLR3X1gtGXijB0dh6lxSxAgMBAAE=" >> tinc_config/vpn/hosts/central
+echo "-----END RSA PUBLIC KEY-----" >> tinc_config/vpn/hosts/central
+read -p "What do you want your tinc name to be? It cannot have spaces or dashes, and will be used for vpn and jukeman location name: " myname
+echo "Name = $myname" >> tinc_config/vpn/tinc.conf
+echo "ConnectTo = central" >> tinc_config/vpn/tinc.conf
+echo "Device = /dev/net/tun" >> tinc_config/vpn/tinc.conf
+echo "Mode = switch" >> tinc_config/vpn/tinc.conf
+echo "PrivateKeyFile = /etc/tinc/vpn/rsa_key.priv" >> tinc_config/vpn/tinc.conf
+echo "Subnet = $subnet" >> tinc_config/vpn/hosts/$myname
 read -p "What do you want your tinc ip to be?" myip
-echo "ifconfig bridge $myip netmask 255.255.255.0" >> vpn/tinc-up
-echo "ifconfig bridge up" >> vpn/tinc-up
-sudo cp -r vpn /etc/tinc/
+echo "ifconfig bridge $myip netmask 255.255.255.0" >> tinc_config/vpn/tinc-up
+echo "ifconfig bridge up" >> tinc_config/vpn/tinc-up
+sudo cp -r tinc_config/vpn /etc/tinc/
 sudo tincd -n vpn -K
-echo "Copy the following file and paste it to the tinc server:"
+clear
+echo "Copy the following file and paste it to /etc/tinc/vpn/hosts/$myname on the tinc server:"
+echo ""
+echo ""
 cat /etc/tinc/vpn/hosts/$myname
-sleep 60
+sleep 30
+
+# move to src dir
+cd src
 
 # download and install ruby
 # wget ftp://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p248.tar.gz
-tar zxvf ruby-1.8.7-p248.tar.gz
+tar zxvf ruby-1.8.7-p248.tar.gz 
 cd ruby-1.8.7-p248
 ./configure
 make
@@ -58,18 +66,25 @@ cd ..
 # setup and install mongo
 tar zxvf mongodb-linux-x86_64-1.3.2.tgz
 sudo mv mongodb-linux-x86_64-1.3.2 /opt/mongodb
+echo "logappend = true" >> mongod_settings.conf
+echo "logpath = /var/log/mongodb/mongod.log " >> mongod_settings.conf
+echo "dbpath = /data/db" >> mongod_settings.conf
+echo "master = true" >> mongod_settings.conf
 while true; do
     read -p "Is this a slave jukebox (y/n)? " yn
     case $yn in
-        [Yy]* ) echo "slave = true" >> mongod_settings.conf; read -p "What is the address to the master (e.g. 10.10.10.5)? " ip; echo "source = $ip" >> mongod_settings.conf; break;;
+        [Yy]* ) echo "slave = true" >> mongod_settings.conf; read -p "What is the address to the master (e.g. 10.10.10.5:27017)? " ip; echo "source = $ip" >> mongod_settings.conf; break;;
         [Nn]* ) exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
-sudo cp mongod_settings.conf /opt/mongodb/
+sudo mv mongod_settings.conf /opt/mongodb/
 sudo mkdir -p /data/db
 sudo mkdir -p /var/log/mongodb
-sudo cp mongod.conf /etc/init/
+sudo ln -s /opt/mongodb/bin/mongo /usr/bin/mongo
+sudo ln -s /opt/mongodb/bin/mongod /usr/bin/mongod
+sudo ln -s /opt/mongodb/bin/mongodump /usr/bin/mongodump
+sudo ln -s /opt/mongodb/bin/mongorestore /usr/bin/mongorestore
 
 # install required gems
 sudo gem install rails -v2.3.5 --no-ri --no-rdoc
@@ -79,15 +94,47 @@ sudo gem install mongrel -v1.1.5 --no-ri --no-rdoc
 sudo gem install mongo_mapper -v0.7.0 --no-ri --no-rdoc
 sudo gem install mime-types -v1.16 --no-ri --no-rdoc
 sudo gem install ruby-mp3info -v0.6.13 --no-ri --no-rdoc
-sudo gem install http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem --no-ri --no-rdoc
-sudo gem install http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem --no-ri --no-rdoc
+sudo gem install navvy -v0.1.0 --no-ri --no-rdoc
+# wget http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
+sudo gem install src/rack-gridfs-0.2.0.gem
+# wget http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
+sudo gem install src/librmpd-0.1.1.gem
+
+# move down a dir
+cd ..
+
+# upstart scripts
+sudo cp upstart_scripts/* /etc/init/
 
 # install jukeman
 cd ~
 mkdir apps
 cd apps
 git clone git://github.com/jonmagic/jukeman.git
+cd jukeman
+echo "development: &non_production_settings" >> config/settings.yml
+echo "  site_name: JukeMan" >> config/settings.yml
+echo "  mpd_port: 6600" >> config/settings.yml
+echo "  location: $myname" >> config/settings.yml
+echo "  import_folder_path: /home/jukeman/music" >> config/settings.yml
+echo "" >> config/settings.yml
+echo "test:" >> config/settings.yml
+echo "  <<: *non_production_settings" >> config/settings.yml
+echo "  mpd_port: 7700" >> config/settings.yml
+echo "  location: Testing" >> config/settings.yml
+echo "production:" >> config/settings.yml
+echo "  site_name: JukeMan" >> config/settings.yml
+echo "  mpd_port: 6600" >> config/settings.yml
+echo "  location: $myname" >> config/settings.yml
+echo "  import_folder_path: /home/jukeman/music" >> config/settings.yml
+clear
 
 # reboot
-read -p "Reboot (y/n)? "
-[ "$REPLY" == "y" ] && sudo reboot
+while true; do
+    read -p "Reboot (y/n)? " yn
+    case $yn in
+        [Yy]* ) sudo reboot; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
