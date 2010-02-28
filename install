@@ -95,6 +95,8 @@ sudo gem install mongo_mapper -v0.7.0 --no-ri --no-rdoc
 sudo gem install mime-types -v1.16 --no-ri --no-rdoc
 sudo gem install ruby-mp3info -v0.6.13 --no-ri --no-rdoc
 sudo gem install navvy -v0.1.0 --no-ri --no-rdoc
+sudo gem install crack -v0.1.6 --no-ri --no-rdoc
+sudo gem install httparty -v0.5.2 --no-ri --no-rdoc
 # wget http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
 sudo gem install rack-gridfs-0.2.0.gem
 # wget http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
@@ -104,7 +106,12 @@ sudo gem install god -v0.8.0
 # move down a dir
 cd ..
 
-# upstart scripts
+# create global god config
+sudo echo "dir = File.join('/home/jukeman/apps/jukeman/script/', '*.god')" > /etc/god.conf
+sudo echo 'puts "Loading #{dir}"' >> /etc/god.conf
+sudo echo 'God.load(dir)' >> /etc/god.conf
+
+# copy upstart scripts into place
 sudo cp upstart_scripts/* /etc/init/
 
 # install jukeman
