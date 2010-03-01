@@ -10,7 +10,7 @@
 
 # install required packages
 sudo apt-get upgrade
-sudo apt-get install build-essential libssl-dev libreadline5-dev mpd tinc bridge-utils
+sudo apt-get install build-essential libssl-dev libreadline5-dev alsa-base mpd tinc bridge-utils
 
 # setup network to server
 sudo echo "vpn" >> /etc/tinc/nets.boot
