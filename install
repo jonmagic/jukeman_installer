@@ -74,7 +74,7 @@ while true; do
     read -p "Is this a slave jukebox (y/n)? " yn
     case $yn in
         [Yy]* ) echo "slave = true" >> mongod_settings.conf; read -p "What is the address to the master (e.g. 10.10.10.5:27017)? " ip; echo "source = $ip" >> mongod_settings.conf; break;;
-        [Nn]* ) exit;;
+        [Nn]* ) ;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -98,18 +98,19 @@ sudo gem install navvy -v0.1.0 --no-ri --no-rdoc
 sudo gem install crack -v0.1.6 --no-ri --no-rdoc
 sudo gem install httparty -v0.5.2 --no-ri --no-rdoc
 # wget http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
-sudo gem install rack-gridfs-0.2.0.gem
+sudo gem install rack-gridfs-0.2.0.gem --no-ri --no-rdoc
 # wget http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
-sudo gem install librmpd-0.1.1.gem
-sudo gem install god -v0.8.0
+sudo gem install librmpd-0.1.1.gem --no-ri --no-rdoc
+sudo gem install god -v0.8.0 --no-ri --no-rdoc
+
+# create global god config
+echo "dir = File.join('/home/jukeman/apps/jukeman/script/', '*.god')" > god.conf
+echo 'puts "Loading #{dir}"' >> god.conf
+echo 'God.load(dir)' >> god.conf
+sudo cp god.conf /etc/
 
 # move down a dir
 cd ..
-
-# create global god config
-sudo echo "dir = File.join('/home/jukeman/apps/jukeman/script/', '*.god')" > /etc/god.conf
-sudo echo 'puts "Loading #{dir}"' >> /etc/god.conf
-sudo echo 'God.load(dir)' >> /etc/god.conf
 
 # copy upstart scripts into place
 sudo cp upstart_scripts/* /etc/init/
@@ -120,6 +121,7 @@ mkdir apps
 cd apps
 git clone git://github.com/jonmagic/jukeman.git
 cd jukeman
+mkdir log
 echo "development: &non_production_settings" >> config/settings.yml
 echo "  site_name: JukeMan" >> config/settings.yml
 echo "  mpd_port: 6600" >> config/settings.yml
