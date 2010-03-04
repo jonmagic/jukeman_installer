@@ -1,8 +1,11 @@
-h4. This sets up a base jukeman server and configures it to be a master or a slave.
+h1. Jukeman Installer
 
-p. Here are the commands you need to run on a bare metal 64-bit Ubuntu 9.10 Server (or Desktop) install to get things rolling.
+h2. This sets up a base jukeman server and configures it to be a master or a slave.
+
+Here are the commands you need to run on a bare metal 64-bit Ubuntu 9.10 Server (or Desktop) install to get things rolling.
 
 bc. sudo apt-get update && sudo apt-get install openssh-server git-core
+
 bc. git clone git://github.com/jonmagic/jukeman_installer.git && cd jukeman_installer && sh install
 
 *NOTE: If a base server install doesn't list a sound card (aplay -l) after installing alsa-utils, then you need to install the Desktop version of Ubuntu and then disable gdm from starting by doing the following:*
