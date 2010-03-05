@@ -22,13 +22,13 @@ cd tinc-1.0.12
 make
 sudo make install
 cd ..
+cd ..
 
 # setup network to server
-read -p "What is the REAL ip of the tinc central server (e.g. 67.59.29.202)? " serverip
-echo "Address = $serverip" >> tinc/vpn/hosts/central
-read -p "What is your vpn network subnet (e.g. 10.111.222.0/24)? " subnet
-echo "Subnet = $subnet" >> tinc/vpn/hosts/central
-echo "Address = $serverip" >> tinc/vpn/hosts/central
+# read -p "What is the REAL ip of the tinc central server (e.g. 67.59.29.202)? " serverip
+echo "Address = 67.59.29.202" > tinc/vpn/hosts/central
+# read -p "What is your vpn network subnet (e.g. 10.111.222.0/24)? " subnet
+echo "Subnet = 10.111.222.0/24" >> tinc/vpn/hosts/central
 ### replace with key from central server
 echo "-----BEGIN RSA PUBLIC KEY-----" >> tinc/vpn/hosts/central
 echo "MIGJAoGBAOJA5efj4bw3Rr1HVLuAZZxJFaQcmEB4Ji9wQfgtfneNN1D9M/6lGfTh" >> tinc/vpn/hosts/central
