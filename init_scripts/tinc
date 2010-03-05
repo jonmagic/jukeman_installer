@@ -10,16 +10,17 @@ RETVAL=0
  
 case "$1" in
     start)
-      /usr/sbin/tincd --config=/etc/tinc/vpn --pidfile=/var/run/tincd.pid --logfile=/var/log/tincd.log
+      /usr/local/sbin/tincd -n vpn
       RETVAL=$?
   ;;
     stop)
-      /usr/sbin/tincd -k
+      kill `cat /usr/local/var/run/tinc.vpn.pid`
+      /usr/local/sbin/tincd -n vpn -k
       RETVAL=$?
   ;;
     restart)
-      /usr/sbin/tincd -k
-      /usr/sbin/tincd --config=/etc/tinc/vpn --pidfile=/var/run/tincd.pid --logfile=/var/log/tincd.log
+      kill `cat /usr/local/var/run/tinc.vpn.pid`
+      /usr/local/sbin/tincd -n vpn
       RETVAL=$?
   ;;
     status)
