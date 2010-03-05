@@ -36,12 +36,12 @@ echo "0fRRdS1FWFCG27dX+0j4Om7SG+1FKTaJMSdWzBp2pnIC3nGilrCWqCerdENzrMuW" >> tinc/
 echo "VtPsrNyPiK18g1+0tXthHgQbVHptBWktLR3X1gtGXijB0dh6lxSxAgMBAAE=" >> tinc/vpn/hosts/central
 echo "-----END RSA PUBLIC KEY-----" >> tinc/vpn/hosts/central
 read -p "What do you want your tinc name to be? It cannot have spaces or dashes, and will be used for vpn and jukeman location name: " myname
-echo "Name = $myname" >> tinc/vpn/tinc.conf
+echo "Name = $myname" > tinc/vpn/tinc.conf
 echo "ConnectTo = central" >> tinc/vpn/tinc.conf
 echo "Device = /dev/net/tun" >> tinc/vpn/tinc.conf
 echo "Mode = switch" >> tinc/vpn/tinc.conf
-echo "PrivateKeyFile = /etc/tinc/vpn/rsa_key.priv" >> tinc/vpn/tinc.conf
-echo "Subnet = $subnet" >> tinc/vpn/hosts/$myname
+echo "PrivateKeyFile = /usr/local/etc/tinc/vpn/rsa_key.priv" >> tinc/vpn/tinc.conf
+echo "Subnet = 10.111.222.0/24" >> tinc/vpn/hosts/$myname
 read -p "What do you want your tinc ip to be (e.g. 10.111.222.???)? " myip
 echo "ifconfig bridge $myip netmask 255.255.255.0" >> tinc/vpn/tinc-up
 echo "ifconfig bridge up" >> tinc/vpn/tinc-up
