@@ -1,16 +1,18 @@
 #!/bin/bash
 
 # prereq
-# sudo apt-get update
-# sudo apt-get upgrade
-# sudo apt-get install git-core
-# git clone git://github.com/jonmagic/jukeman_installer.git
-# cd jukeman_installer
-# sh install
+# su root
+# apt-get update && apt-get upgrade && apt-get install sudo git-core
+# add "jukeman ALL=(ALL) ALL" to the /etc/sudoers
+# git clone git://github.com/jonmagic/jukeman_installer.git && cd jukeman_installer && sh install
 
 # install required packages
-sudo apt-get upgrade
-sudo apt-get install build-essential libssl-dev libreadline5-dev alsa-base mpd tinc bridge-utils
+sudo apt-get install build-essential libssl-dev libreadline5-dev alsa-utils mpd mpc tinc bridge-utils
+
+# set mixer volumes
+amixer sset Master 100 unmute
+amixer sset PCM 250 unmute
+amixer sset Front 100 unmute
 
 # setup network to server
 sudo echo "vpn" >> /etc/tinc/nets.boot
@@ -102,18 +104,19 @@ sudo gem install rack-gridfs-0.2.0.gem --no-ri --no-rdoc
 # wget http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
 sudo gem install librmpd-0.1.1.gem --no-ri --no-rdoc
 sudo gem install god -v0.8.0 --no-ri --no-rdoc
-
-# create global god config
-echo "dir = File.join('/home/jukeman/apps/jukeman/script/', '*.god')" > god.conf
-echo 'puts "Loading #{dir}"' >> god.conf
-echo 'God.load(dir)' >> god.conf
-sudo cp god.conf /etc/
-
-# move down a dir
 cd ..
 
-# copy upstart scripts into place
-sudo cp upstart_scripts/* /etc/init/
+
+# copy init scripts
+sudo cp init_scripts/mongod /etc/init.d/
+sudo cp init_scripts/god /etc/init.d/
+sudo update-rc.d mongod defaults
+sudo update-rc.d god defaults
+
+# copy conf files
+sudo cp conf/mpd.conf /etc/
+sudo cp conf/god.conf /etc/
+
 
 # install jukeman
 cd ~
