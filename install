@@ -76,7 +76,7 @@ while true; do
     read -p "Is this a slave jukebox (y/n)? " yn
     case $yn in
         [Yy]* ) echo "slave = true" >> mongod_settings.conf; read -p "What is the address to the master (e.g. 10.10.10.5:27017)? " ip; echo "source = $ip" >> mongod_settings.conf; break;;
-        [Nn]* ) ;;
+        [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -147,7 +147,7 @@ while true; do
     read -p "Reboot (y/n)? " yn
     case $yn in
         [Yy]* ) sudo reboot; break;;
-        [Nn]* ) exit;;
+        [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
 done
