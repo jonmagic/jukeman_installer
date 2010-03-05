@@ -4,7 +4,7 @@ h2. This sets up a base jukeman server and configures it to be a master or a sla
 
 Here are the commands you need to run on a bare metal 64-bit Debian 5.04 install to get things rolling.
 
-bc. During the Debian install call the new user __jukeman__
+NOTE: During the Debian install call the new user __jukeman__
 
 bc. Login as root
 apt-get update && apt-get upgrade && apt-get install sudo git-core openssh-server
