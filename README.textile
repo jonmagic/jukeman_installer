@@ -7,7 +7,9 @@ Here are the commands you need to run on a bare metal 64-bit Debian 5.04 install
 bc. During the Debian install call the new user __jukeman__
 
 bc. Login as root
-apt-get update && apt-get upgrade && apt-get install sudo git-core openssh-server && exit
+apt-get update && apt-get upgrade && apt-get install sudo git-core openssh-server
+nano /etc/sudoers # and add a line for the jukeman user, jukeman ALL=(ALL) ALL
+exit
 
 bc. Login as jukeman user
 git clone git://github.com/jonmagic/jukeman_installer.git && cd jukeman_installer && sh install
