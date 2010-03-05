@@ -21,6 +21,8 @@ cd tinc-1.0.12
 ./configure
 make
 sudo make install
+sudo mkdir -p /usr/local/var/run
+sudo mkdir -p /usr/local/var/log
 cd ..
 cd ..
 
@@ -41,7 +43,7 @@ echo "ConnectTo = central" >> tinc/vpn/tinc.conf
 echo "Device = /dev/net/tun" >> tinc/vpn/tinc.conf
 echo "Mode = switch" >> tinc/vpn/tinc.conf
 echo "PrivateKeyFile = /usr/local/etc/tinc/vpn/rsa_key.priv" >> tinc/vpn/tinc.conf
-echo "Subnet = 10.111.222.0/24" >> tinc/vpn/hosts/$myname
+echo "Subnet = 10.111.222.0/24" > tinc/vpn/hosts/$myname
 read -p "What do you want your tinc ip to be (e.g. 10.111.222.???)? " myip
 echo "ifconfig bridge $myip netmask 255.255.255.0" >> tinc/vpn/tinc-up
 echo "ifconfig bridge up" >> tinc/vpn/tinc-up
@@ -51,7 +53,7 @@ clear
 echo "Copy the following file and paste it to /etc/tinc/vpn/hosts/$myname on the tinc server:"
 echo ""
 echo ""
-cat tinc/vpn/hosts/$myname
+cat /usr/local/etc/tinc/vpn/hosts/$myname
 sleep 30
 
 # move to src dir
@@ -100,7 +102,7 @@ sudo ln -s /opt/mongodb/bin/mongorestore /usr/bin/mongorestore
 sudo gem install rails -v2.3.5 --no-ri --no-rdoc
 sudo gem install mongo -v0.18.3 --no-ri --no-rdoc
 sudo gem install mongo_ext -v0.18.3 --no-ri --no-rdoc
-sudo gem install mongrel -v1.1.5 --no-ri --no-rdoc
+# sudo gem install mongrel -v1.1.5 --no-ri --no-rdoc
 sudo gem install mongo_mapper -v0.7.0 --no-ri --no-rdoc
 sudo gem install mime-types -v1.16 --no-ri --no-rdoc
 sudo gem install ruby-mp3info -v0.6.13 --no-ri --no-rdoc
@@ -111,22 +113,20 @@ sudo gem install httparty -v0.5.2 --no-ri --no-rdoc
 sudo gem install rack-gridfs-0.2.0.gem --no-ri --no-rdoc
 # wget http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
 sudo gem install librmpd-0.1.1.gem --no-ri --no-rdoc
-sudo gem install god -v0.8.0 --no-ri --no-rdoc
+# sudo gem install god -v0.8.0 --no-ri --no-rdoc
+sudo gem install bluepill -v0.0.36 --no-ri --no-rdoc
 cd ..
-
 
 # copy init scripts
 sudo cp init_scripts/tinc /etc/init.d/
 sudo update-rc.d tinc defaults
 sudo cp init_scripts/mongod /etc/init.d/
 sudo update-rc.d mongod defaults
-sudo cp init_scripts/god /etc/init.d/
-sudo update-rc.d god defaults
+sudo cp init_scripts/bluepill /etc/init.d/
+sudo update-rc.d bluepill defaults 91
 
 # copy conf files
 sudo cp conf/mpd.conf /etc/
-sudo cp conf/god.conf /etc/
-
 
 # install jukeman
 cd ~
