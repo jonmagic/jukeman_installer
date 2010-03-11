@@ -10,7 +10,7 @@
 sudo apt-get install build-essential libssl-dev libreadline5-dev alsa-utils mpd mpc liblzo2-2 liblzo2-dev bridge-utils
 
 # set mixer volumes
-amixer sset Master 100 unmute
+amixer sset Master 80 unmute
 amixer sset PCM 250 unmute
 amixer sset Front 100 unmute
 
@@ -100,17 +100,19 @@ sudo ln -s /opt/mongodb/bin/mongorestore /usr/bin/mongorestore
 
 # install required gems
 sudo gem install rails -v2.3.5 --no-ri --no-rdoc
-sudo gem install mongo -v0.18.3 --no-ri --no-rdoc
-sudo gem install mongo_ext -v0.18.3 --no-ri --no-rdoc
+sudo gem install mongo -v0.19.1 --no-ri --no-rdoc
+sudo gem install mongo_ext -v0.19.1 --no-ri --no-rdoc
 # sudo gem install mongrel -v1.1.5 --no-ri --no-rdoc
-sudo gem install mongo_mapper -v0.7.0 --no-ri --no-rdoc
+sudo gem install mongo_mapper -v0.7.1 --no-ri --no-rdoc
 sudo gem install mime-types -v1.16 --no-ri --no-rdoc
 sudo gem install ruby-mp3info -v0.6.13 --no-ri --no-rdoc
 sudo gem install navvy -v0.1.0 --no-ri --no-rdoc
 sudo gem install crack -v0.1.6 --no-ri --no-rdoc
 sudo gem install httparty -v0.5.2 --no-ri --no-rdoc
+sudo gem install wand -v0.2.1 --no-ri --no-rdoc
+sudo gem install jnunemaker-grip -v0.1.1 --no-ri --no-rdoc
 # wget http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
-sudo gem install rack-gridfs-0.2.0.gem --no-ri --no-rdoc
+sudo gem install jnunemaker-rack-gridfs-0.3.0.gem --no-ri --no-rdoc
 # wget http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
 sudo gem install librmpd-0.1.1.gem --no-ri --no-rdoc
 # sudo gem install god -v0.8.0 --no-ri --no-rdoc
