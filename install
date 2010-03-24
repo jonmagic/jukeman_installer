@@ -76,8 +76,8 @@ sudo ruby setup.rb
 cd ..
 
 # setup and install mongo
-tar zxvf mongodb-linux-x86_64-1.3.2.tgz
-sudo mv mongodb-linux-x86_64-1.3.2 /opt/mongodb
+tar zxvf mongodb-linux-x86_64-1.3.3.tgz
+sudo mv mongodb-linux-x86_64-1.3.3 /opt/mongodb
 echo "logappend = true" >> mongod_settings.conf
 echo "logpath = /var/log/mongodb/mongod.log " >> mongod_settings.conf
 echo "dbpath = /data/db" >> mongod_settings.conf
