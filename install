@@ -112,7 +112,8 @@ sudo gem install httparty -v0.5.2 --no-ri --no-rdoc
 sudo gem install wand -v0.2.1 --no-ri --no-rdoc
 sudo gem install jnunemaker-grip -v0.1.1 --no-ri --no-rdoc
 # wget http://github.com/jonmagic/rack-gridfs/raw/master/pkg/rack-gridfs-0.2.0.gem
-sudo gem install jnunemaker-rack-gridfs-0.3.0.gem --no-ri --no-rdoc
+# sudo gem install jnunemaker-rack-gridfs-0.3.0.gem --no-ri --no-rdoc
+sudo gem install jnunemaker-rack-gridfs-0.3.0.gem
 # wget http://github.com/jonmagic/librmpd/raw/master/pkg/librmpd-0.1.1.gem
 sudo gem install librmpd-0.1.1.gem --no-ri --no-rdoc
 # sudo gem install god -v0.8.0 --no-ri --no-rdoc
