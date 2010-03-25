@@ -106,6 +106,7 @@ sudo ln -s /opt/mongodb/bin/mongorestore /usr/bin/mongorestore
 
 # install required gems
 sudo gem install rails -v2.3.5 --no-ri --no-rdoc
+sudo gem install mongrel -v1.1.5 --no-ri --no-rdoc
 sudo gem install mongo -v0.19.1 --no-ri --no-rdoc
 sudo gem install mongo_ext -v0.19.1 --no-ri --no-rdoc
 # sudo gem install mongrel -v1.1.5 --no-ri --no-rdoc
