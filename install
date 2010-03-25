@@ -76,8 +76,14 @@ sudo ruby setup.rb
 cd ..
 
 # setup and install mongo
-tar zxvf mongodb-linux-x86_64-1.3.3.tgz
-sudo mv mongodb-linux-x86_64-1.3.3 /opt/mongodb
+while true; do
+    read -p "Install mongodb 32bit or 64bit? (32, 64) " yn
+    case $yn in
+        32 ) tar zxvf mongodb-linux-i686-1.3.5.tgz; sudo mv mongodb-linux-i686-1.3.5 /opt/mongodb; break;;
+        64 ) tar zxvf mongodb-linux-x86_64-1.3.5.tgz; sudo mv mongodb-linux-x86_64-1.3.5 /opt/mongodb; break;;
+        * ) echo "Please answer 32 or 64.";;
+    esac
+done
 echo "logappend = true" >> mongod_settings.conf
 echo "logpath = /var/log/mongodb/mongod.log " >> mongod_settings.conf
 echo "dbpath = /data/db" >> mongod_settings.conf
@@ -87,7 +93,7 @@ while true; do
     case $yn in
         [Yy]* ) echo "slave = true" >> mongod_settings.conf; read -p "What is the address to the master (e.g. 10.10.10.5:27017)? " ip; echo "source = $ip" >> mongod_settings.conf; break;;
         [Nn]* ) break;;
-        * ) echo "Please answer yes or no.";;
+        * ) echo "Please answer y or n.";;
     esac
 done
 sudo mv mongod_settings.conf /opt/mongodb/
@@ -161,6 +167,6 @@ while true; do
     case $yn in
         [Yy]* ) sudo reboot; break;;
         [Nn]* ) break;;
-        * ) echo "Please answer yes or no.";;
+        * ) echo "Please answer y or n.";;
     esac
 done
