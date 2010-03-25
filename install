@@ -79,8 +79,8 @@ cd ..
 while true; do
     read -p "Install mongodb 32bit or 64bit? (32, 64) " yn
     case $yn in
-        32 ) tar zxvf mongodb-linux-i686-1.3.5.tgz; sudo mv mongodb-linux-i686-1.3.5 /opt/mongodb; break;;
-        64 ) tar zxvf mongodb-linux-x86_64-1.3.5.tgz; sudo mv mongodb-linux-x86_64-1.3.5 /opt/mongodb; break;;
+        32 ) wget http://downloads.mongodb.org/linux/mongodb-linux-i686-1.4.0.tgz; tar zxvf mongodb-linux-i686-1.4.0.tgz; sudo mv mongodb-linux-i686-1.4.0 /opt/mongodb; break;;
+        64 ) wget http://downloads.mongodb.org/linux/mongodb-linux-x86_64-1.4.0.tgz; tar zxvf mongodb-linux-x86_64-1.4.0.tgz; sudo mv mongodb-linux-x86_64-1.4.0 /opt/mongodb; break;;
         * ) echo "Please answer 32 or 64.";;
     esac
 done
