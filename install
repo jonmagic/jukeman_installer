@@ -149,6 +149,7 @@ echo "development: &non_production_settings" >> config/settings.yml
 echo "  site_name: JukeMan" >> config/settings.yml
 echo "  mpd_port: 6600" >> config/settings.yml
 echo "  location: $myname" >> config/settings.yml
+echo "  volume: 80" >> config/settings.yml
 echo "  import_folder_path: /home/jukeman/music" >> config/settings.yml
 echo "" >> config/settings.yml
 echo "test:" >> config/settings.yml
@@ -159,6 +160,7 @@ echo "production:" >> config/settings.yml
 echo "  site_name: JukeMan" >> config/settings.yml
 echo "  mpd_port: 6600" >> config/settings.yml
 echo "  location: $myname" >> config/settings.yml
+echo "  volume: 80" >> config/settings.yml
 echo "  import_folder_path: /home/jukeman/music" >> config/settings.yml
 clear
 
