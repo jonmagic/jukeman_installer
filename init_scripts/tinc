@@ -14,8 +14,8 @@ case "$1" in
       RETVAL=$?
   ;;
     stop)
-      /usr/local/sbin/tincd -n vpn -k
-      /usr/local/sbin/tincd -n vpn -k
+      kill `cat /usr/local/var/run/tinc.vpn.pid`
+      rm /usr/local/var/run/tinc.vpn.pid
       RETVAL=$?
   ;;
     restart)
